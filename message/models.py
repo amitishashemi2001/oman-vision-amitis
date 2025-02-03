@@ -47,3 +47,12 @@ class MessageRecord(models.Model):
 
     def is_written_by(self, user):
         return self.user == user
+
+
+class Device(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="device")
+    player_id = models.CharField(max_length=255)
+    device_type = models.CharField(max_length=20, choices=[('Android', 'Android'), ('iOS', 'iOS'), ('Web', 'Web')])
+
+    def __str__(self):
+        return f"{self.user.username} - {self.device_type}"
