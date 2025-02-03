@@ -1,0 +1,10 @@
+.idea
+db.sqlite3
+pgdata
+postgresql
+__pycache__
+*.pyc
+media/
+venv/
+accounts/__pycache__
+cases/__pycache__

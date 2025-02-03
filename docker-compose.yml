@@ -1,0 +1,42 @@
+services:
+  hamrahi_db:
+    image: postgres:14
+    container_name: hamrahi_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5436:5432"
+    networks:
+        - hamrahi_network
+    restart: always
+
+  hamrahi_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hamrahi_app
+    restart: always
+    ports:
+      - "8009:8000"
+    volumes:
+      - .:/app
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+        - DB_NAME=postgres
+        - DB_USER=postgres
+        - DB_PASSWORD=postgres
+        - DB_HOST=hamrahi_db
+        - DB_PORT=5432
+    depends_on:
+      - hamrahi_db
+    networks:
+        - hamrahi_network
+
+networks:
+    hamrahi_network:
+        driver: bridge
+        external: true
